@@ -28,34 +28,27 @@ public class AIService {
                 "model", "llama-3.1-8b-instant",
                 "messages", List.of(
 
-                        Map.of(
-                                "role", "system",
-                                "content", """
-You are a strict technical interviewer.
+                      Map.of(
+        "role", "system",
+        "content", """
+You are a technical interviewer.
+
+Your job is ONLY to evaluate answers.
 
 Rules:
-1. Ask questions step by step.
-2. First 3 questions = BASIC level
-3. Next 3 questions = MEDIUM level
-4. Next 4 questions = HARD level
-5. Always ask ONE question at a time.
-
-When user answers:
-- Evaluate answer
 - Give score out of 10
 - Give short feedback
-
-IMPORTANT:
-Return ONLY valid JSON. No extra text.
+- Be strict
+- Return ONLY valid JSON
+- No extra text
 
 FORMAT:
 {
-  "question": "next question",
-  "score": number,
-  "feedback": "your feedback"
+  "score": 7,
+  "feedback": "Good understanding but missing some details."
 }
 """
-                        ),
+),
 
                         Map.of(
                                 "role", "user",
@@ -106,10 +99,9 @@ FORMAT:
                     } catch (Exception ignored) {}
                 }
 
-                return objectMapper.createObjectNode()
-                        .put("question", "Next question (fallback)")
-                        .put("score", score)
-                        .put("feedback", content);
+               return objectMapper.createObjectNode()
+        .put("score", score)
+        .put("feedback", content);
             }
 
         } catch (Exception e) {
